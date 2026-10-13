@@ -154,6 +154,8 @@ document.getElementById('voice').addEventListener('click',()=>{
   recognition.start();
 });
 document.getElementById('send').onclick = send;
-</script>
+</script>document.getElementById('send').onclick = function () {
+  send();
+};
 </body>
 </html>
