@@ -79,6 +79,39 @@ function speak(text){
   speechSynthesis.speak(utterance);
 }
 function reply(text){
+async function reply(text) {
+  statusText.textContent = "● Nova सोच रहा है...";
+
+  try {
+    const response = await fetch(
+      "https://YOUR-WORKER-URL.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: text })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "AI request failed");
+    }
+
+    addMessage(data.reply, "nova");
+    speak(data.reply);
+    statusText.textContent = "● NOVA ONLINE";
+  } catch (error) {
+    addMessage(
+      "Nova अभी जवाब नहीं दे पाई। Backend URL, Secret और API सेटिंग जाँचो।",
+      "nova"
+    );
+    statusText.textContent = "● CONNECTION ERROR";
+  }
+      }
+      
   const q=text.toLowerCase();
   let answer;
   if(q.includes('नमस्ते')||q.includes('हेलो')||q.includes('hello'))
